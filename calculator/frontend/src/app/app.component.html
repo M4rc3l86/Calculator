@@ -1,1 +1,17 @@
-<calc-nx-welcome></calc-nx-welcome>
+<div class="grid">
+  <input
+    type="text"
+    class="col-fixed"
+    style="width: 210px"
+    [(ngModel)]="display"
+    readonly
+  />
+  @for (buttonLabel of buttonLabels; track $index) {
+  <div class="col-fixed" style="width: 30px">
+    <calc-button
+      [label]="buttonLabel"
+      (buttonClicked)="onButtonClick($event)"
+    ></calc-button>
+  </div>
+  }
+</div>
