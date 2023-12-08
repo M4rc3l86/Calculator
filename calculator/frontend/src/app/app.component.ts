@@ -1,7 +1,8 @@
-import { Component, HostBinding, inject } from "@angular/core";
+import { Component, HostBinding, OnDestroy, inject } from "@angular/core";
 import { ButtonComponent } from "./components/button/button.component";
 import { FormsModule } from "@angular/forms";
 import { CalculatorService } from "./services/calculator/calculator.service";
+import { Subscription } from "rxjs";
 
 @Component({
   standalone: true,
@@ -10,7 +11,8 @@ import { CalculatorService } from "./services/calculator/calculator.service";
   templateUrl: "./app.component.html",
   styleUrl: "./app.component.css",
 })
-export class AppComponent {
+export class AppComponent implements OnDestroy {
+  calcSub: Subscription = new Subscription();
   @HostBinding("class") class = "w-8rem block";
   protected display = "0";
 
@@ -92,7 +94,12 @@ export class AppComponent {
 
   #handleEquals(): void {
     let result = 0;
-    this.#calculatorService.calculate(this.#operand, this.#first, this.#second);
+
+    this.calcSub = this.#calculatorService
+      .calculate(this.#operand, this.#first, this.#second)
+      .subscribe((value) => {
+        result = value;
+      });
 
     this.display = result.toString();
     this.#first = result;
@@ -109,5 +116,9 @@ export class AppComponent {
 
       console.log(this.#second);
     }
+  }
+
+  ngOnDestroy(): void {
+    this.calcSub.unsubscribe();
   }
 }

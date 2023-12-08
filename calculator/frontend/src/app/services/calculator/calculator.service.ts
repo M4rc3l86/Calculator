@@ -1,5 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable, inject } from "@angular/core";
+import { Observable } from "rxjs";
 
 @Injectable({
   providedIn: "root",
@@ -7,15 +8,15 @@ import { Injectable, inject } from "@angular/core";
 export class CalculatorService {
   #http: HttpClient = inject(HttpClient);
 
-  calculate(operand: string, first: number, second: number): void {
-    this.#http
-      .post("http://localhost:3000/calculate", {
-        operand,
-        first,
-        second,
-      })
-      .subscribe((response) => {
-        console.log("Calculator Service", response);
-      });
+  calculate(
+    operand: string,
+    first: number,
+    second: number
+  ): Observable<number> {
+    return this.#http.post<number>("http://localhost:3000/calculate", {
+      operand,
+      first,
+      second,
+    });
   }
 }
