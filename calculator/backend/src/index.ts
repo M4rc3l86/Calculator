@@ -1,61 +1,48 @@
-import { Elysia, t } from "elysia";
-import { cors } from "@elysiajs/cors";
+// Main server setup and endpoint definition
 
+import { Elysia } from "elysia";
+import { cors } from "@elysiajs/cors";
+import { add, sub, mul, div } from "./arithmeticOperations";
+
+// Define types for calculation
 interface Calculation {
   first: number;
   second: number;
   operand: string;
 }
 
-const app = new Elysia().use(cors());
+type Operand = "+" | "-" | "*" | "/";
 
-app.get("/", () => "Hello Elysia");
+// Map operands to their corresponding functions
+const operations: Record<Operand, (n1: number, n2: number) => number> = {
+  "+": add,
+  "-": sub,
+  "*": mul,
+  "/": div,
+};
+
+// Function to perform calculation based on the operand
+function performCalculation(
+  operand: Operand,
+  first: number,
+  second: number
+): number {
+  const operation = operations[operand];
+  return operation(first, second);
+}
+
+// Initialize the server and define routes
+const app = new Elysia().use(cors());
 
 app.post("/calculate", ({ body }) => {
   const { operand, first, second } = body as Calculation;
-  console.log(body);
-  const result = performCalculation(operand, first, second);
-  return result;
+  try {
+    const result = performCalculation(operand as Operand, first, second);
+    return result;
+  } catch (error) {
+    return { error: error.message };
+  }
 });
 
-app.listen(3000);
-
-function performCalculation(operand: string, first: number, second: number) {
-  console.log(operand, first, second);
-  switch (operand) {
-    case "+":
-      return add(first, second);
-    case "-":
-      return sub(first, second);
-    case "*":
-      return mul(first, second);
-    case "/":
-      return div(first, second);
-    default:
-      return 0;
-  }
-}
-
-function add(n1: number, n2: number): number {
-  return n1 + n2;
-}
-
-function sub(n1: number, n2: number): number {
-  return n1 - n2;
-}
-
-function mul(n1: number, n2: number): number {
-  return n1 * n2;
-}
-
-function div(n1: number, n2: number): number {
-  if (n2 !== 0) {
-    return n1 / n2;
-  } else {
-    return 0;
-  }
-}
-
-console.log(
-  `🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`
-);
+// Start the server
+app.listen(3000, () => console.log("Server running on port 3000"));
