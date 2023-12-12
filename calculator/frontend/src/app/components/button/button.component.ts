@@ -6,6 +6,7 @@ import {
   Output,
 } from "@angular/core";
 import { CommonModule } from "@angular/common";
+import { ButtonType } from "../../types";
 
 @Component({
   selector: "calc-button",
@@ -18,6 +19,22 @@ import { CommonModule } from "@angular/common";
 export class ButtonComponent {
   @Input({ required: true }) label!: string;
   @Output() buttonClicked = new EventEmitter<string>();
+  @Input() type: ButtonType = "number";
+
+  getTypeClass(): string {
+    switch (this.type) {
+      case "number":
+        return "number";
+      case "operator":
+        return "operator";
+      case "equal-sign":
+        return "equal-sign operator";
+      case "comma":
+        return "comma";
+      case "all-clear":
+        return "all-clear";
+    }
+  }
 
   onButtonClicked(input: string) {
     this.buttonClicked.emit(input);

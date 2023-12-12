@@ -1,17 +1,41 @@
-<div class="grid">
-  <input
-    type="text"
-    class="col-fixed"
-    style="width: 210px"
-    [(ngModel)]="display"
-    readonly
-  />
-  @for (buttonLabel of buttonLabels; track $index) {
-  <div class="col-fixed" style="width: 30px">
+<div class="calculator">
+  <input type="text" class="calculator-screen" [value]="display" disabled />
+
+  <div class="calculator-keys">
+    <!-- operator keys -->
+    @for (operator of operators; track $index) {
     <calc-button
-      [label]="buttonLabel"
+      [label]="operator"
+      type="operator"
+      (buttonClicked)="onButtonClick($event)"
+    ></calc-button>
+    }
+
+    <!-- number keys -->
+    @for (number of numbers; track $index) {
+    <calc-button
+      [label]="number"
+      type="number"
+      (buttonClicked)="onButtonClick($event)"
+    ></calc-button>
+    }
+
+    <!-- special keys -->
+    <calc-button
+      label=","
+      type="comma"
+      (buttonClicked)="onButtonClick($event)"
+    ></calc-button>
+    <calc-button
+      style="grid-area: 2 / 4 / 6 / 5"
+      label="="
+      type="equal-sign"
+      (buttonClicked)="onButtonClick($event)"
+    ></calc-button>
+    <calc-button
+      label="AC"
+      type="all-clear"
       (buttonClicked)="onButtonClick($event)"
     ></calc-button>
   </div>
-  }
 </div>

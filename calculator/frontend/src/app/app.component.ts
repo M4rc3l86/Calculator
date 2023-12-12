@@ -1,8 +1,9 @@
-import { Component, HostBinding, OnDestroy, inject } from "@angular/core";
-import { ButtonComponent } from "./components/button/button.component";
+import { Component, OnDestroy, inject } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { CalculatorService } from "./services/calculator/calculator.service";
 import { Subscription } from "rxjs";
+
+import { ButtonComponent } from "./components/button/button.component";
 
 @Component({
   standalone: true,
@@ -13,27 +14,10 @@ import { Subscription } from "rxjs";
 })
 export class AppComponent implements OnDestroy {
   calcSub: Subscription = new Subscription();
-  @HostBinding("class") class = "w-8rem block";
-  protected display = "0";
 
-  protected buttonLabels = [
-    "7",
-    "8",
-    "9",
-    "/",
-    "4",
-    "5",
-    "6",
-    "*",
-    "1",
-    "2",
-    "3",
-    "-",
-    "0",
-    ",",
-    "=",
-    "+",
-  ];
+  protected display = "0";
+  protected operators = ["+", "-", "*", "/"];
+  protected numbers = ["7", "8", "9", "4", "5", "6", "1", "2", "3", "0"];
 
   #calculatorService = inject(CalculatorService);
   #first = 0;

@@ -2,7 +2,10 @@
   "name": "calculator",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "start:frontend": "nx run frontend:serve",
+    "start:backend": "bun run backend/src/index.ts"
+  },
   "private": true,
   "devDependencies": {
     "@angular-devkit/build-angular": "~17.0.0",

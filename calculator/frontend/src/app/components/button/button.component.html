@@ -1,3 +1,7 @@
-<button class="bg-orange-700 border-round-sm" (click)="onButtonClicked(label)">
+<button
+  [ngClass]="getTypeClass()"
+  type="button"
+  (click)="onButtonClicked(label)"
+>
   {{ label }}
 </button>
