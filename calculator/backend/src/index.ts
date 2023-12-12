@@ -1,10 +1,7 @@
-// Main server setup and endpoint definition
-
 import { Elysia } from "elysia";
 import { cors } from "@elysiajs/cors";
 import { add, sub, mul, div } from "./arithmeticOperations";
 
-// Define types for calculation
 interface Calculation {
   first: number;
   second: number;
@@ -31,7 +28,6 @@ function performCalculation(
   return operation(first, second);
 }
 
-// Initialize the server and define routes
 const app = new Elysia().use(cors());
 
 app.post("/calculate", ({ body }) => {
@@ -44,5 +40,4 @@ app.post("/calculate", ({ body }) => {
   }
 });
 
-// Start the server
 app.listen(3000, () => console.log("Server running on port 3000"));
