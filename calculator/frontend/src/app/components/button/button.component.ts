@@ -21,19 +21,16 @@ export class ButtonComponent {
   @Output() buttonClicked = new EventEmitter<string>();
   @Input() type: ButtonType = "number";
 
+  #typeClassMap = {
+    number: "number",
+    operator: "operator",
+    "equal-sign": "equal-sign operator",
+    comma: "comma",
+    "all-clear": "all-clear",
+  };
+
   getTypeClass(): string {
-    switch (this.type) {
-      case "number":
-        return "number";
-      case "operator":
-        return "operator";
-      case "equal-sign":
-        return "equal-sign operator";
-      case "comma":
-        return "comma";
-      case "all-clear":
-        return "all-clear";
-    }
+    return this.#typeClassMap[this.type];
   }
 
   onButtonClicked(input: string) {
